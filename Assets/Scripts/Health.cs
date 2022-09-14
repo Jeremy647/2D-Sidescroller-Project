@@ -34,6 +34,11 @@ public class Health : MonoBehaviour
         UpdateHearts();
     }
 
+    public virtual void HandleDamage(int damageValue)
+    {
+        health -= damageValue;
+    }
+
     //logic for keeping heart UI up to date
     void UpdateHearts()
     {

@@ -49,6 +49,9 @@ public class CharacterController : MonoBehaviour
         //Checks if player is touching ground
         IsGrounded();
 
+        //Falling Check
+        IsFalling();
+
         //Flips character to face the way they move.
         DirectionCheck();
 
@@ -88,19 +91,17 @@ public class CharacterController : MonoBehaviour
         //SET UP ANIMATIONS
         anim.SetBool("isRunning", moveX != 0);
         anim.SetBool("isGrounded", IsGrounded());
+        anim.SetBool("isFalling", IsFalling());
 
-        if (rBody.velocity.y <= -0.5f)
+        
+        /*
+        FeetDust
+        if (moveX != 0 && IsGrounded())
         {
-            anim.SetBool("isFalling", true);
+            CreateFeetDust();
         }
-        else { anim.SetBool("isFalling", false); }
-
-        //FeetDust
-        //if (moveX != 0 && IsGrounded())
-        //{
-        //    CreateFeetDust();
-        //}
-        //else { feetDust.Stop(); }
+        else { feetDust.Stop(); }
+        */
 
     }
 
@@ -121,8 +122,14 @@ public class CharacterController : MonoBehaviour
     private bool IsGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(capsColl2D.bounds.center, capsColl2D.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
-        return raycastHit.collider != null;
-        
+        return raycastHit.collider != null; 
+    }
+
+    private bool IsFalling()
+    {
+        if (rBody.velocity.y <= -0.5f && !IsGrounded())
+        { return true; }
+        else { return false; }
     }
 
     private void DirectionCheck()
